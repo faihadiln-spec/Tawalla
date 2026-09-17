@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navigation } from "@/components/ui/Navigation";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -22,6 +22,48 @@ export default function LandingPage() {
   const { user } = useAuth();
   const [currentNav, setCurrentNav] = useState("home");
 
+  // Dynamic Scroll Spy: automatically updates the active navigation bar item on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      // If user reaches near bottom of the page, activate documents
+      const isBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 100;
+
+      if (isBottom) {
+        setCurrentNav("documents");
+        return;
+      }
+
+      // Check sections from bottom to top
+      const sections = [
+        { id: "documents", el: document.getElementById("documents") },
+        { id: "warranties", el: document.getElementById("warranties") },
+        { id: "expenses", el: document.getElementById("expenses") },
+      ];
+
+      const threshold = 180; // Viewport distance to switch active tab
+
+      for (const { id, el } of sections) {
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= threshold) {
+            setCurrentNav(id);
+            return;
+          }
+        }
+      }
+
+      // If above all defined sections, activate home
+      setCurrentNav("home");
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const handleStartClick = () => {
     if (user) {
       router.push("/dashboard");
@@ -29,7 +71,6 @@ export default function LandingPage() {
       router.push("/register");
     }
   };
-
 
   const handleNavClick = (id: string) => {
     setCurrentNav(id);
