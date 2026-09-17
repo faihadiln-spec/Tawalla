@@ -10,6 +10,7 @@ import { Card, CardTitle, CardDescription } from "@/components/ui/Card";
 import { useToast } from "@/components/ui/Toast";
 import { CalmSpinner } from "@/components/ui/LoadingState";
 import { User, Lock, ShieldCheck, LogOut, CheckCircle2, AlertCircle } from "lucide-react";
+import { NotificationSettingsCard } from "@/components/settings/NotificationSettingsCard";
 
 export default function SettingsPage() {
   const { user, signOut, updateUserPassword } = useAuth();
@@ -169,7 +170,14 @@ export default function SettingsPage() {
         </form>
       </Card>
 
-      {/* 2. Security & Password Card */}
+      {/* 2. Notification & Alert Settings Card */}
+      <NotificationSettingsCard
+        profile={profile}
+        userEmail={user?.email || ""}
+        onProfileUpdated={(updated) => setProfile(updated)}
+      />
+
+      {/* 3. Security & Password Card */}
       <Card variant="elevated" padding="lg" className="space-y-6">
         <div className="flex items-center justify-between pb-3 border-b border-tint-brown/20">
           <div className="flex items-center gap-2.5">

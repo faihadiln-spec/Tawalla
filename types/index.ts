@@ -10,6 +10,11 @@ export interface Profile {
   full_name: string;
   avatar_url?: string | null;
   currency: string; // default "SAR"
+  email_notifications_enabled?: boolean;
+  reminder_days?: number; // 0 means "بدون تنبيه", 3, 7, 14, 30, or custom
+  notify_warranties?: boolean;
+  notify_documents?: boolean;
+  notification_email?: string | null;
   created_at: string;
   updated_at: string;
 }

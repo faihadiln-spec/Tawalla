@@ -32,7 +32,7 @@ export async function getProfile(userId: string): Promise<Profile | null> {
 
 export async function updateProfile(
   userId: string,
-  updates: Partial<Pick<Profile, "full_name" | "avatar_url" | "currency">>
+  updates: Partial<Profile>
 ): Promise<{ data: Profile | null; error: string | null }> {
   const supabase = createClient();
   const { data, error } = await supabase
@@ -43,7 +43,8 @@ export async function updateProfile(
     .single();
 
   if (error) {
-    return { data: null, error: "تعذر تحديث الملف الشخصي." };
+    console.error("Error updating profile:", error);
+    return { data: null, error: "تعذر تحديث البيانات." };
   }
   return { data: data as Profile, error: null };
 }
