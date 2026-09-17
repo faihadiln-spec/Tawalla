@@ -5,6 +5,8 @@ import Link from "next/link";
 import { AttentionItem } from "@/types";
 import { AlertCircle, Clock, ArrowLeft, ShieldAlert, FileWarning, CheckCircle2 } from "lucide-react";
 
+import { toArabicDigits } from "@/lib/utils/formatters";
+
 interface AttentionSystemProps {
   items: AttentionItem[];
 }
@@ -21,7 +23,7 @@ export const AttentionSystem: React.FC<AttentionSystemProps> = ({ items }) => {
             كل شيء هادئ ومنتظم في مساحتك ✨
           </p>
           <p className="text-[11px] text-text-muted">
-            لا توجد ضمانات أو وثائق تتطلب انتباهك أو تجديداً خلال الـ 30 يوماً القادمة.
+            لا توجد ضمانات أو وثائق تتطلب انتباهك أو تجديداً خلال الـ ٣٠ يوماً القادمة.
           </p>
         </div>
       </div>
@@ -31,11 +33,9 @@ export const AttentionSystem: React.FC<AttentionSystemProps> = ({ items }) => {
   return (
     <div className="space-y-3 text-right">
       <div className="flex items-center justify-between text-xs">
-        <span className="font-bold text-text-main flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 text-warm-brown" />
-          <span>يحتاج انتباهك قريباً ({items.length})</span>
+        <span className="font-bold text-text-main">
+          <span>يحتاج انتباهك قريباً ({toArabicDigits(items.length)})</span>
         </span>
-        <span className="text-[11px] text-text-muted">تنبيهات استباقية هادئة</span>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -75,10 +75,6 @@ export const AttentionSystem: React.FC<AttentionSystemProps> = ({ items }) => {
                     <span>{item.subtitle}</span>
                   </p>
                 </div>
-              </div>
-
-              <div className="text-text-muted group-hover:text-primary-blue pr-2 transition-colors">
-                <ArrowLeft className="w-4 h-4" />
               </div>
             </Link>
           );

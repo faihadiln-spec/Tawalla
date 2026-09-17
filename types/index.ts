@@ -151,7 +151,7 @@ export interface AttentionItem {
 export const EXPENSE_CATEGORY_LABELS: Record<ExpenseCategory, string> = {
   entertainment: 'ترفيه',
   health: 'صحة ولياقة',
-  digital: 'سحابية ورقمية',
+  digital: 'تقنية',
   convenience: 'خدمات وتوصيل',
   utilities: 'فواتير واشتراكات',
   other: 'أخرى',

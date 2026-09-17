@@ -28,7 +28,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         isCenter ? "text-center items-center" : "text-right"
       } ${className}`}
     >
-      <div className={`space-y-3 max-w-2xl ${isCenter ? "mx-auto" : ""}`}>
+      <div className={`space-y-3 max-w-3xl ${isCenter ? "mx-auto" : ""}`}>
         {badgeText && (
           <div>
             <Badge variant={badgeVariant} size="md">
@@ -36,7 +36,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
             </Badge>
           </div>
         )}
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text-main leading-tight">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text-main leading-snug">
           {title}
         </h2>
         {subtitle && (

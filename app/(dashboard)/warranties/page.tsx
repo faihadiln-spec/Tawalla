@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/Button";
 import { CalmSpinner } from "@/components/ui/LoadingState";
 import { useToast } from "@/components/ui/Toast";
 import { ShieldCheck, Plus, Sparkles, Filter } from "lucide-react";
+import { toArabicDigits } from "@/lib/utils/formatters";
 
 export default function WarrantiesPage() {
   const { user } = useAuth();
@@ -151,22 +152,22 @@ export default function WarrantiesPage() {
           <Filter className="w-3.5 h-3.5" /> تصفية:
         </span>
         {[
-          { key: "all", label: `الكل (${warranties.length})` },
+          { key: "all", label: `الكل (${toArabicDigits(warranties.length)})` },
           {
             key: "active",
-            label: `سارية (${warranties.filter((w) => w.status === "active").length})`,
+            label: `سارية (${toArabicDigits(warranties.filter((w) => w.status === "active").length)})`,
           },
           {
             key: "expiring_soon",
-            label: `تنتهي قريباً (${warranties.filter((w) => w.status === "expiring_soon").length})`,
+            label: `تنتهي قريباً (${toArabicDigits(warranties.filter((w) => w.status === "expiring_soon").length)})`,
           },
           {
             key: "expired",
-            label: `منتهية (${warranties.filter((w) => w.status === "expired").length})`,
+            label: `منتهية (${toArabicDigits(warranties.filter((w) => w.status === "expired").length)})`,
           },
           {
             key: "claimed",
-            label: `مطالب بها (${warranties.filter((w) => w.status === "claimed").length})`,
+            label: `مطالب بها (${toArabicDigits(warranties.filter((w) => w.status === "claimed").length)})`,
           },
         ].map((tab) => {
           const isSelected = activeFilter === tab.key;

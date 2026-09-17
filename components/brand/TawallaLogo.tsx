@@ -153,15 +153,12 @@ export const TawallaLogo: React.FC<TawallaLogoProps> = ({
 
       {showText && (
         <div className="flex flex-col text-right">
-          <div className="flex items-center gap-1.5">
-            <span
-              className="font-bold tracking-tight text-text-main leading-none"
-              style={{ fontSize: `${Math.max(18, pixelSize * 0.44)}px` }}
-            >
-              تولّى
-            </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-accent-green inline-block mb-1" />
-          </div>
+          <span
+            className="font-bold tracking-tight text-text-main leading-none"
+            style={{ fontSize: `${Math.max(18, pixelSize * 0.44)}px` }}
+          >
+            تولّى
+          </span>
           {subtitle && (
             <span className="text-xs text-text-muted mt-1 leading-snug">
               {subtitle}

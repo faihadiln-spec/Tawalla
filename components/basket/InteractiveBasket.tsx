@@ -11,6 +11,8 @@ import {
   useSensors,
   DragEndEvent,
   DragStartEvent,
+  pointerWithin,
+  rectIntersection,
 } from "@dnd-kit/core";
 import { Expense, ExpenseInput, ExpenseStatus } from "@/types";
 import { ExpenseCard } from "./ExpenseCard";
@@ -32,6 +34,7 @@ import {
   Sparkles,
   ShieldAlert,
 } from "lucide-react";
+import { toArabicDigits, formatArabicNumber } from "@/lib/utils/formatters";
 
 interface InteractiveBasketProps {
   userId: string;
@@ -39,40 +42,51 @@ interface InteractiveBasketProps {
   onRefresh?: () => void;
 }
 
-// Droppable Removal Zone
-function RemovalZone({ isOver, count }: { isOver: boolean; count: number }) {
-  const { setNodeRef } = useDroppable({
+// Droppable Removal & Excluded Zone (موحدة أسفل السلة)
+function RemovalZone({
+  excludedItems,
+  onRestore,
+}: {
+  excludedItems: Expense[];
+  onRestore: (id: string) => void;
+}) {
+  const { setNodeRef, isOver } = useDroppable({
     id: "removal-zone",
   });
+
+  const count = excludedItems.length;
 
   return (
     <div
       ref={setNodeRef}
-      className={`relative w-full rounded-2xl border-2 border-dashed p-4.5 transition-all duration-300 text-right ${
+      className={`relative w-full rounded-3xl border-2 transition-all duration-300 text-right p-5 sm:p-6 ${
+        count > 0
+          ? "border-warm-brown/30 bg-tint-brown/40"
+          : "border-dashed border-tint-brown/60 bg-surface/50 hover:border-warm-brown/40"
+      } ${
         isOver
-          ? "bg-tint-brown border-warm-brown scale-[1.01] shadow-float ring-2 ring-warm-brown/30"
-          : "bg-surface/50 border-tint-brown/60 hover:border-warm-brown/40"
+          ? "border-solid border-warm-brown bg-tint-brown scale-[1.01] shadow-float ring-4 ring-warm-brown/30"
+          : ""
       }`}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div
-            className={`w-8 h-8 rounded-xl flex items-center justify-center transition-colors ${
-              isOver ? "bg-warm-brown text-white" : "bg-tint-brown text-warm-brown"
-            }`}
-          >
-            <ArrowDownRight className="w-4 h-4" />
-          </div>
-          <div>
-            <p className="text-xs font-bold text-text-main">
-              منطقة الاستبعاد للتجربة {count > 0 ? `(${count})` : ""}
-            </p>
-            <p className="text-[11px] text-text-muted">
-              {isOver
-                ? "أفلت البطاقة هنا لتجربة استبعادها وحساب الوفر فوراً!"
-                : "اسحب أي اشتراك وأفلته هنا لاستبعاده مؤقتاً"}
-            </p>
-          </div>
+      {/* Header row */}
+      <div className="flex items-center justify-between gap-2 pb-1">
+        <div>
+          <p className="text-xs sm:text-sm font-bold text-text-main flex items-center gap-1.5">
+            <span>المستبعدات</span>
+            {count > 0 && (
+              <span className="text-xs px-2 py-0.5 rounded-full bg-warm-brown text-white font-medium">
+                {toArabicDigits(count)}
+              </span>
+            )}
+          </p>
+          <p className="text-[11px] text-text-muted mt-0.5">
+            {isOver
+              ? "أفلت البطاقة هنا لتجربة استبعادها وحساب الوفر فوراً!"
+              : count > 0
+              ? "اسحب المزيد هنا للإسقاط، أو انقر (+) لإعادة الاشتراك إلى السلة"
+              : "اسحب أي اشتراك من السلة وأفلته هنا لتجربة استبعاده وملاحظة الوفر"}
+          </p>
         </div>
 
         {isOver && (
@@ -81,6 +95,20 @@ function RemovalZone({ isOver, count }: { isOver: boolean; count: number }) {
           </span>
         )}
       </div>
+
+      {/* Excluded items list */}
+      {count > 0 && (
+        <div className="pt-3.5 mt-3 border-t border-warm-brown/20 flex flex-wrap gap-2.5">
+          {excludedItems.map((item) => (
+            <ExpenseCard
+              key={item.id}
+              expense={item}
+              isExcluded={true}
+              onRestore={onRestore}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -88,12 +116,10 @@ function RemovalZone({ isOver, count }: { isOver: boolean; count: number }) {
 // Droppable Basket Zone
 function BasketContainer({
   children,
-  isOver,
 }: {
   children: React.ReactNode;
-  isOver: boolean;
 }) {
-  const { setNodeRef } = useDroppable({
+  const { setNodeRef, isOver } = useDroppable({
     id: "basket-zone",
   });
 
@@ -286,9 +312,18 @@ export const InteractiveBasket: React.FC<InteractiveBasketProps> = ({
     }
   };
 
+  const customCollisionDetection = (args: any) => {
+    const pointerCollisions = pointerWithin(args);
+    if (pointerCollisions.length > 0) {
+      return pointerCollisions;
+    }
+    return rectIntersection(args);
+  };
+
   return (
     <DndContext
       sensors={sensors}
+      collisionDetection={customCollisionDetection}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
@@ -300,9 +335,6 @@ export const InteractiveBasket: React.FC<InteractiveBasketProps> = ({
               <ShoppingBag className="w-6 h-6 text-warm-brown" />
               <span>سلة مصروفاتي التفاعلية</span>
             </h2>
-            <p className="text-xs sm:text-sm text-text-muted">
-              عاين، اسحب، استبعد، وشاهد أثر الوفر اللحظي على نمط حياتك.
-            </p>
           </div>
 
           <Button
@@ -328,19 +360,13 @@ export const InteractiveBasket: React.FC<InteractiveBasketProps> = ({
           onOpenShare={() => setIsShareModalOpen(true)}
         />
 
-        {/* 3. Drag & Drop Removal Zone */}
-        <RemovalZone isOver={false} count={excludedItems.length} />
-
-        {/* 4. Active Basket Container */}
-        <BasketContainer isOver={false}>
+        {/* 3. Active Basket Container */}
+        <BasketContainer>
           <div className="space-y-4">
             <div className="flex items-center justify-between text-xs font-semibold text-text-muted pb-3 border-b border-tint-brown/20">
               <span className="flex items-center gap-1.5">
                 <ShoppingBag className="w-4 h-4 text-warm-brown" />
-                الاشتراكات النشطة في السلة ({activeItems.length})
-              </span>
-              <span className="hidden sm:inline-block text-[11px]">
-                اسحب البطاقة للخارج أو انقر (-) للاستبعاد
+                الاشتراكات النشطة في السلة ({toArabicDigits(activeItems.length)})
               </span>
             </div>
 
@@ -352,7 +378,7 @@ export const InteractiveBasket: React.FC<InteractiveBasketProps> = ({
                 <p className="text-sm font-bold text-text-main">سلتك خالية حالياً!</p>
                 <p className="text-xs text-text-muted max-w-sm mx-auto">
                   {excludedItems.length > 0
-                    ? `لقد استبعدت كافة المصروفات ووفرت ${initialTotal.toLocaleString()} ر.س شهرياً.`
+                    ? `لقد استبعدت كافة المصروفات ووفرت ${formatArabicNumber(initialTotal)} ر.س شهرياً.`
                     : "ابدأ بإضافة أول مصروف أو اشتراك شهري لمشاهدة وزنه البصري داخل السلة."}
                 </p>
                 {excludedItems.length > 0 ? (
@@ -394,40 +420,23 @@ export const InteractiveBasket: React.FC<InteractiveBasketProps> = ({
           </div>
         </BasketContainer>
 
-        {/* 5. Excluded Zone (المستبعدات للتجربة) */}
-        {excludedItems.length > 0 && (
-          <div className="p-6 rounded-3xl bg-tint-brown/40 border border-warm-brown/30 space-y-4 animate-in fade-in duration-300">
-            <div className="flex items-center justify-between text-xs font-semibold text-text-main">
-              <span className="flex items-center gap-2 text-warm-brown font-bold">
-                <ArrowDownRight className="w-4 h-4" />
-                المستبعدات للتجربة ({excludedItems.length})
-              </span>
-              <span className="text-[11px] text-text-muted">
-                انقر على (+) لإعادة الاشتراك فوراً إلى السلة
-              </span>
-            </div>
-
-            <div className="flex flex-wrap gap-2.5">
-              {excludedItems.map((item) => (
-                <ExpenseCard
-                  key={item.id}
-                  expense={item}
-                  isExcluded={true}
-                  onRestore={handleRestoreExpense}
-                />
-              ))}
-            </div>
-          </div>
-        )}
+        {/* 4. Droppable Removal & Excluded Zone (منطقة ومستبعدات التجربة موحدة أسفل السلة) */}
+        <RemovalZone
+          excludedItems={excludedItems}
+          onRestore={handleRestoreExpense}
+        />
 
         {/* Drag Overlay Preview */}
-        <DragOverlay>
+        <DragOverlay dropAnimation={null}>
           {activeDraggingExpense ? (
-            <ExpenseCard
-              expense={activeDraggingExpense}
-              minPrice={minPrice}
-              maxPrice={maxPrice}
-            />
+            <div className="rotate-1 drop-shadow-2xl opacity-95">
+              <ExpenseCard
+                expense={activeDraggingExpense}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                isOverlay={true}
+              />
+            </div>
           ) : null}
         </DragOverlay>
 

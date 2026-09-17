@@ -75,7 +75,7 @@ export default function SettingsPage() {
     setPasswordError(null);
 
     if (newPassword.length < 6) {
-      setPasswordError("كلمة المرور يجب أن لا تقل عن 6 خانات.");
+      setPasswordError("كلمة المرور يجب أن لا تقل عن ٦ خانات.");
       return;
     }
 

@@ -11,8 +11,6 @@ import { ConceptSection } from "@/components/landing/ConceptSection";
 import { InteractiveBasketPreview } from "@/components/landing/InteractiveBasketPreview";
 import { WarrantiesPreview } from "@/components/landing/WarrantiesPreview";
 import { DocumentsPreview } from "@/components/landing/DocumentsPreview";
-import { EcosystemSection } from "@/components/landing/EcosystemSection";
-import { CtaSection } from "@/components/landing/CtaSection";
 import { Footer } from "@/components/landing/Footer";
 import { ArrowLeft, Sparkles, Shield, Check, Heart } from "lucide-react";
 
@@ -51,8 +49,8 @@ export default function LandingPage() {
       <Navigation
         currentPath={currentNav}
         onNavigate={handleNavClick}
-        ctaText={user ? "دخول لمساحتي" : "ابدأ مع تولّى"}
-        onCtaClick={handleStartClick}
+        ctaText={user ? "دخول لمساحتي" : "تسجيل دخول"}
+        onCtaClick={() => (user ? router.push("/dashboard") : router.push("/login"))}
       />
 
       {/* Main Storytelling Canvas */}
@@ -62,32 +60,17 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Right Column (in RTL): Core Confident Messaging */}
             <div className="lg:col-span-6 space-y-6 text-right">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-tint-brown text-warm-brown border border-warm-brown/20 shadow-xs">
-                <Sparkles className="w-3.5 h-3.5 text-warm-brown" />
-                <span>مساحتك الشخصية لما يهمك</span>
-              </div>
-
               <div className="space-y-3">
                 <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-text-main leading-[1.15]">
-                  تولّى مصاريفك، ضماناتك ووثائقك.
+                  تولّى مصاريفك ضماناتك ووثائقك
                 </h1>
                 <p className="text-base sm:text-xl text-text-muted leading-relaxed font-normal">
-                  كل ما يخص حياتك المالية والشخصية، في مكان واحد.
+                  كل ما يخص حياتك المالية والشخصية، في مكان واحد هادئ ومنظم.
                 </p>
               </div>
 
               {/* Primary & Secondary CTAs */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
-                <Button
-                  size="lg"
-                  variant="primary"
-                  onClick={handleStartClick}
-                  rightIcon={<ArrowLeft className="w-4 h-4" />}
-                  className="shadow-float"
-                >
-                  {user ? "دخول لمساحتي" : "ابدأ مع تولّى"}
-                </Button>
-
                 <Button
                   size="lg"
                   variant="outline"
@@ -104,10 +87,10 @@ export default function LandingPage() {
                   <Check className="w-4 h-4 text-accent-green" /> بدون أي ربط بنكي
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Check className="w-4 h-4 text-accent-green" /> حفظ مشفر وخاص
+                  <Check className="w-4 h-4 text-accent-green" /> خصوصية وتشفير كامل
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Check className="w-4 h-4 text-accent-green" /> تجربة عربية أصيلة
+                  <Check className="w-4 h-4 text-accent-green" /> واجهة عربية
                 </span>
               </div>
             </div>
@@ -130,7 +113,7 @@ export default function LandingPage() {
           <SectionHeader
             badgeText="مسار مصروفاتي"
             badgeVariant="blue"
-            title="السلة التفاعلية: حرّك، استبعد، وشاهد وفرك اللحظي"
+            title="السلة التفاعلية: حرّك، استبعد، وشاهد توفيرك"
             subtitle="وداعاً للقوائم الجامدة. في «تولّى»، كل مصروف له وزنه البصري داخل السلة، واستبعاده يمنحك فوراً إجمالي الوفر الشهري والسنوي."
           />
           <InteractiveBasketPreview />
@@ -141,12 +124,6 @@ export default function LandingPage() {
 
         {/* 6. وثائقي: DOCUMENT PREVIEW */}
         <DocumentsPreview />
-
-        {/* 7. ONE COHERENT ECOSYSTEM */}
-        <EcosystemSection />
-
-        {/* 8. SIMPLE INSPIRING CTA */}
-        <CtaSection onStart={handleStartClick} />
       </main>
 
       {/* 9. BRAND FOOTER */}

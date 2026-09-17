@@ -3,6 +3,7 @@
 import React from "react";
 import { Sparkles, RotateCcw, Share2, TrendingDown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { formatArabicNumber, toArabicDigits } from "@/lib/utils/formatters";
 
 interface SavingsSummaryProps {
   initialTotal: number;
@@ -33,13 +34,13 @@ export const SavingsSummary: React.FC<SavingsSummaryProps> = ({
             التكلفة الشهرية الحالية
           </p>
           <p className="text-3xl sm:text-4xl font-bold text-primary-blue">
-            {currentTotal.toLocaleString()}{" "}
+            {formatArabicNumber(currentTotal)}{" "}
             <span className="text-xs font-normal text-text-muted">ر.س / شهر</span>
           </p>
           {initialTotal !== currentTotal && (
             <p className="text-[11px] text-text-muted">
               التكلفة الأساسية قبل الاستبعاد:{" "}
-              <span className="line-through">{initialTotal.toLocaleString()} ر.س</span>
+              <span className="line-through">{formatArabicNumber(initialTotal)} ر.س</span>
             </p>
           )}
         </div>
@@ -53,19 +54,19 @@ export const SavingsSummary: React.FC<SavingsSummaryProps> = ({
                   <Sparkles className="w-3 h-3" /> وفر محقق
                 </span>
                 <span className="text-xs text-text-muted font-medium">
-                  (تم استبعاد {excludedCount} اشتراك)
+                  (تم استبعاد {toArabicDigits(excludedCount)} اشتراك)
                 </span>
               </div>
               <div className="flex items-baseline gap-4 pt-0.5">
                 <div>
                   <p className="text-2xl font-bold text-accent-green">
-                    +{monthlySavings.toLocaleString()}{" "}
+                    +{formatArabicNumber(monthlySavings)}{" "}
                     <span className="text-xs font-normal text-text-muted">ر.س / شهرياً</span>
                   </p>
                 </div>
                 <div className="pr-4 border-r border-tint-brown/30">
                   <p className="text-sm font-bold text-accent-green">
-                    +{annualSavings.toLocaleString()}{" "}
+                    +{formatArabicNumber(annualSavings)}{" "}
                     <span className="text-[10px] font-normal text-text-muted">ر.س / سنوياً</span>
                   </p>
                 </div>

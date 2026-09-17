@@ -1,5 +1,6 @@
 import React from "react";
 import { TawallaLogo } from "@/components/brand/TawallaLogo";
+import { toArabicDigits } from "@/lib/utils/formatters";
 
 export const Footer: React.FC = () => {
   return (
@@ -46,17 +47,14 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2 text-xs text-text-muted">
               <li>خصوصية وأمان تام للبيانات</li>
               <li>بدون بيع أو مشاركة لمعلوماتك</li>
-              <li>تجربة عربية أصيلة RTL</li>
-              <li>واجهة مهدئة بدون تعقيد</li>
+              <li>تجربة عربية أصيلة</li>
+              <li>واجهات بدون تعقيد</li>
             </ul>
           </div>
         </div>
 
         <div className="pt-8 border-t border-tint-brown/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-muted">
-          <p>© {new Date().getFullYear()} تولّى (Tawalla). جميع الحقوق محفوظة.</p>
-          <p className="font-mono text-[11px] text-text-muted/70">
-            تولّى مصاريفك، ضماناتك ووثائقك.
-          </p>
+          <p>© {toArabicDigits(new Date().getFullYear())} تولّى. جميع الحقوق محفوظة.</p>
         </div>
       </div>
     </footer>

@@ -73,7 +73,7 @@ export const ExpenseModal: React.FC<ExpenseModalProps> = ({
     if (billingDay) {
       const d = parseInt(billingDay, 10);
       if (isNaN(d) || d < 1 || d > 31) {
-        setErrorMessage("يوم الفاتورة يجب أن يكون بين 1 و 31.");
+        setErrorMessage("يوم الفاتورة يجب أن يكون بين ١ و ٣١.");
         return;
       }
       parsedDay = d;
@@ -130,7 +130,7 @@ export const ExpenseModal: React.FC<ExpenseModalProps> = ({
             type="number"
             step="any"
             min="0.01"
-            placeholder="0.00"
+            placeholder="٠٫٠٠"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             required
@@ -171,7 +171,7 @@ export const ExpenseModal: React.FC<ExpenseModalProps> = ({
             type="number"
             min="1"
             max="31"
-            placeholder="مثال: 25"
+            placeholder="مثال: ٢٥"
             value={billingDay}
             onChange={(e) => setBillingDay(e.target.value)}
           />

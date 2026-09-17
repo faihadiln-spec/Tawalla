@@ -23,14 +23,14 @@ export interface NavigationProps {
 export const Navigation: React.FC<NavigationProps> = ({
   currentPath = "home",
   onNavigate,
-  ctaText = "ابدأ مع تولّى",
+  ctaText,
   onCtaClick,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems: NavItem[] = [
     { id: "home", label: "الرئيسية" },
-    { id: "expenses", label: "مصروفاتي", badge: "السلة", badgeVariant: "blue" },
+    { id: "expenses", label: "مصروفاتي" },
     { id: "warranties", label: "ضماناتي" },
     { id: "documents", label: "وثائقي" },
   ];
@@ -90,15 +90,16 @@ export const Navigation: React.FC<NavigationProps> = ({
 
         {/* CTA & Mobile Menu Button */}
         <div className="flex items-center gap-3">
-          <Button
-            size="sm"
-            variant="primary"
-            onClick={onCtaClick}
-            rightIcon={<ArrowLeft className="w-3.5 h-3.5 rotate-180 md:rotate-0" />}
-            className="hidden sm:inline-flex"
-          >
-            {ctaText}
-          </Button>
+          {ctaText && (
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={onCtaClick}
+              className="hidden sm:inline-flex"
+            >
+              {ctaText}
+            </Button>
+          )}
 
           <button
             type="button"
@@ -141,16 +142,18 @@ export const Navigation: React.FC<NavigationProps> = ({
               );
             })}
           </div>
-          <div className="pt-3 border-t border-tint-brown/30">
-            <Button
-              fullWidth
-              size="md"
-              variant="primary"
-              onClick={onCtaClick}
-            >
-              {ctaText}
-            </Button>
-          </div>
+          {ctaText && (
+            <div className="pt-3 border-t border-tint-brown/30">
+              <Button
+                fullWidth
+                size="md"
+                variant="primary"
+                onClick={onCtaClick}
+              >
+                {ctaText}
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </header>

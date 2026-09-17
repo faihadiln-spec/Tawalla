@@ -16,14 +16,17 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view their own profile" ON public.profiles;
 CREATE POLICY "Users can view their own profile"
   ON public.profiles FOR SELECT
   USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can insert their own profile" ON public.profiles;
 CREATE POLICY "Users can insert their own profile"
   ON public.profiles FOR INSERT
   WITH CHECK (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Users can update their own profile" ON public.profiles;
 CREATE POLICY "Users can update their own profile"
   ON public.profiles FOR UPDATE
   USING (auth.uid() = id);
@@ -71,18 +74,22 @@ ALTER TABLE public.expenses ENABLE ROW LEVEL SECURITY;
 
 CREATE INDEX IF NOT EXISTS idx_expenses_user_status ON public.expenses(user_id, status);
 
+DROP POLICY IF EXISTS "Users can select own expenses" ON public.expenses;
 CREATE POLICY "Users can select own expenses"
   ON public.expenses FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own expenses" ON public.expenses;
 CREATE POLICY "Users can insert own expenses"
   ON public.expenses FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own expenses" ON public.expenses;
 CREATE POLICY "Users can update own expenses"
   ON public.expenses FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own expenses" ON public.expenses;
 CREATE POLICY "Users can delete own expenses"
   ON public.expenses FOR DELETE
   USING (auth.uid() = user_id);
@@ -111,18 +118,22 @@ ALTER TABLE public.warranties ENABLE ROW LEVEL SECURITY;
 
 CREATE INDEX IF NOT EXISTS idx_warranties_user_end_date ON public.warranties(user_id, warranty_end_date);
 
+DROP POLICY IF EXISTS "Users can select own warranties" ON public.warranties;
 CREATE POLICY "Users can select own warranties"
   ON public.warranties FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own warranties" ON public.warranties;
 CREATE POLICY "Users can insert own warranties"
   ON public.warranties FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own warranties" ON public.warranties;
 CREATE POLICY "Users can update own warranties"
   ON public.warranties FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own warranties" ON public.warranties;
 CREATE POLICY "Users can delete own warranties"
   ON public.warranties FOR DELETE
   USING (auth.uid() = user_id);
@@ -151,18 +162,22 @@ ALTER TABLE public.documents ENABLE ROW LEVEL SECURITY;
 
 CREATE INDEX IF NOT EXISTS idx_documents_user_expiry ON public.documents(user_id, expiry_date);
 
+DROP POLICY IF EXISTS "Users can select own documents" ON public.documents;
 CREATE POLICY "Users can select own documents"
   ON public.documents FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can insert own documents" ON public.documents;
 CREATE POLICY "Users can insert own documents"
   ON public.documents FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own documents" ON public.documents;
 CREATE POLICY "Users can update own documents"
   ON public.documents FOR UPDATE
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own documents" ON public.documents;
 CREATE POLICY "Users can delete own documents"
   ON public.documents FOR DELETE
   USING (auth.uid() = user_id);
@@ -178,6 +193,7 @@ VALUES
 ON CONFLICT (id) DO NOTHING;
 
 -- Storage RLS: Ensure user can only read/write files in their own folder ({user_id}/...)
+DROP POLICY IF EXISTS "Users can access their own document files" ON storage.objects;
 CREATE POLICY "Users can access their own document files"
   ON storage.objects FOR ALL
   USING (

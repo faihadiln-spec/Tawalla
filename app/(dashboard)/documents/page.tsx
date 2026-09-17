@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/Button";
 import { CalmSpinner } from "@/components/ui/LoadingState";
 import { useToast } from "@/components/ui/Toast";
 import { FileText, Plus, Filter, Shield } from "lucide-react";
+import { toArabicDigits } from "@/lib/utils/formatters";
 
 export default function DocumentsPage() {
   const { user } = useAuth();
@@ -139,7 +140,7 @@ export default function DocumentsPage() {
               : "bg-surface text-text-muted hover:text-text-main border border-tint-brown/30"
           }`}
         >
-          الكل ({documents.length})
+          الكل ({toArabicDigits(documents.length)})
         </button>
 
         {Object.entries(DOCUMENT_CATEGORY_LABELS).map(([catKey, catLabel]) => {
@@ -156,7 +157,7 @@ export default function DocumentsPage() {
                   : "bg-surface text-text-muted hover:text-text-main border border-tint-brown/30"
               }`}
             >
-              {catLabel} {count > 0 ? `(${count})` : ""}
+              {catLabel} {count > 0 ? `(${toArabicDigits(count)})` : ""}
             </button>
           );
         })}
@@ -165,9 +166,6 @@ export default function DocumentsPage() {
       {/* Documents Grid */}
       {filteredDocuments.length === 0 ? (
         <div className="py-16 text-center rounded-3xl bg-surface border border-dashed border-tint-brown/40 space-y-3">
-          <div className="w-12 h-12 rounded-2xl bg-tint-brown text-warm-brown mx-auto flex items-center justify-center">
-            <Shield className="w-6 h-6" />
-          </div>
           <p className="text-base font-bold text-text-main">
             {selectedCategory === "all"
               ? "لم تقم بحفظ أي وثيقة بعد"
@@ -176,19 +174,6 @@ export default function DocumentsPage() {
           <p className="text-xs text-text-muted max-w-sm mx-auto">
             احفظ نسخاً واضحة من جوازات السفر، رخص القيادة، أو بطاقات التأمين للوصول إليها بسرعة وأمان.
           </p>
-          {selectedCategory === "all" && (
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={() => {
-                setEditingDocument(null);
-                setIsModalOpen(true);
-              }}
-              leftIcon={<Plus className="w-4 h-4" />}
-            >
-              أضف أول وثيقة
-            </Button>
-          )}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

@@ -7,7 +7,7 @@ import { StatusIndicator } from "@/components/ui/StatusIndicator";
 export const WarrantiesPreview: React.FC = () => {
   const warranties = [
     {
-      product: "شاشة تلفزيون LG OLED 65\"",
+      product: "شاشة تلفزيون LG OLED ٦٥ بوصة",
       vendor: "إكسترا (eXtra)",
       date: "ينتهي: ٩ أكتوبر ٢٠٢٦",
       remaining: "باقٍ ١٨ يوماً",
@@ -16,7 +16,7 @@ export const WarrantiesPreview: React.FC = () => {
       highlight: true,
     },
     {
-      product: "iPhone 15 Pro Max 256GB",
+      product: "آيفون ١٥ برو ماكس (٢٥٦ جيجابايت)",
       vendor: "مكتبة جرير",
       date: "ينتهي: ٢٤ سبتمبر ٢٠٢٦",
       remaining: "سارٍ (ضمان ذهبي)",
@@ -25,7 +25,7 @@ export const WarrantiesPreview: React.FC = () => {
       highlight: false,
     },
     {
-      product: "غسالة صحون بوش (Bosch Series 6)",
+      product: "غسالة صحون بوش (Bosch Series ٦)",
       vendor: "شركة المنيع",
       date: "ينتهي: ١٤ يناير ٢٠٢٧",
       remaining: "سارٍ لمدة سنتين",
@@ -41,7 +41,7 @@ export const WarrantiesPreview: React.FC = () => {
         badgeText="مسار ضماناتي"
         badgeVariant="green"
         title="لا تفرّط في حقك عند حدوث أي عطل"
-        subtitle="فواتير الشراء وبطاقات الضمان في مكان واحد آمن، مع تنبيهات هادئة قبل فوات الأوان."
+        subtitle="فواتير الشراء وبطاقات الضمان في مكان واحد آمن، مع تنبيهات قبل فوات الأوان."
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

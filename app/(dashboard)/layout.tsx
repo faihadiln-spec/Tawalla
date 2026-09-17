@@ -15,7 +15,6 @@ import {
   ShieldCheck,
   FileText,
   Home,
-  Settings,
 } from "lucide-react";
 
 export default function DashboardLayout({
@@ -66,7 +65,6 @@ export default function DashboardLayout({
     { href: "/expenses", label: "مصروفاتي", icon: <TrendingDown className="w-4 h-4" /> },
     { href: "/warranties", label: "ضماناتي", icon: <ShieldCheck className="w-4 h-4" /> },
     { href: "/documents", label: "وثائقي", icon: <FileText className="w-4 h-4" /> },
-    { href: "/settings", label: "الإعدادات", icon: <Settings className="w-4 h-4" /> },
   ];
 
   const displayName =
@@ -90,13 +88,12 @@ export default function DashboardLayout({
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`flex items-center gap-2 px-3.5 py-1.5 rounded-2xl text-xs sm:text-sm font-medium transition-colors ${
+                    className={`px-3.5 py-1.5 rounded-2xl text-xs sm:text-sm font-medium transition-colors ${
                       isActive
                         ? "bg-bg-main text-primary-blue font-semibold border border-tint-brown/30"
                         : "text-text-muted hover:text-text-main hover:bg-tint-brown/30"
                     }`}
                   >
-                    {link.icon}
                     <span>{link.label}</span>
                   </Link>
                 );
@@ -108,6 +105,7 @@ export default function DashboardLayout({
           <div className="flex items-center gap-3">
             <Link
               href="/settings"
+              title="الملف الشخصي والإعدادات"
               className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-bg-main border border-tint-brown/30 text-xs text-text-main hover:border-primary-blue/40 transition-colors"
             >
               <div className="w-6 h-6 rounded-full bg-tint-blue text-primary-blue flex items-center justify-center">
@@ -120,7 +118,6 @@ export default function DashboardLayout({
               variant="outline"
               size="sm"
               onClick={handleSignOut}
-              leftIcon={<LogOut className="w-3.5 h-3.5 text-warm-brown" />}
               className="text-xs"
             >
               خروج
@@ -157,7 +154,7 @@ export default function DashboardLayout({
 
       {/* Footer (Desktop) */}
       <footer className="hidden md:block w-full border-t border-tint-brown/20 py-6 text-center text-xs text-text-muted">
-        <span>منصة تولّى — مساحتك الشخصية الآمنة لما يهمك</span>
+        <span>منصة تولّى</span>
       </footer>
     </div>
   );

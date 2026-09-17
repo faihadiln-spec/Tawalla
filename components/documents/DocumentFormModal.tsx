@@ -146,7 +146,7 @@ export const DocumentFormModal: React.FC<DocumentFormModalProps> = ({
 
           <Input
             label="رقم الوثيقة / الهوية (اختياري)"
-            placeholder="مثال: 1089348291"
+            placeholder="مثال: ١٠٨٩٣٤٨٢٩١"
             value={documentNumber}
             onChange={(e) => setDocumentNumber(e.target.value)}
           />
@@ -180,10 +180,10 @@ export const DocumentFormModal: React.FC<DocumentFormModalProps> = ({
               onChange={(e) => setReminderDays(e.target.value)}
               className="w-full h-11 px-3.5 rounded-2xl bg-surface border border-tint-brown focus:border-primary-blue focus:outline-none text-xs text-text-main"
             >
-              <option value="15">15 يوماً</option>
-              <option value="30">شهر (30 يوماً)</option>
-              <option value="60">شهران (60 يوماً)</option>
-              <option value="90">3 أشهر (90 يوماً)</option>
+              <option value="15">١٥ يوماً</option>
+              <option value="30">شهر (٣٠ يوماً)</option>
+              <option value="60">شهران (٦٠ يوماً)</option>
+              <option value="90">٣ أشهر (٩٠ يوماً)</option>
             </select>
           </div>
         )}

@@ -11,6 +11,7 @@ import {
   DocumentInput,
   AttentionItem,
 } from "@/types";
+import { toArabicDigits, formatArabicDate } from "@/lib/utils/formatters";
 
 // ==============================================================================
 // 1. PROFILES
@@ -180,7 +181,7 @@ export async function getWarranties(userId: string): Promise<Warranty[]> {
     .order("warranty_end_date", { ascending: true });
 
   if (error) {
-    console.error("Error fetching warranties:", error);
+    console.error("Error fetching warranties:", error.message || error);
     return [];
   }
 
@@ -279,7 +280,7 @@ export async function getDocuments(userId: string): Promise<DocumentRecord[]> {
     .order("expiry_date", { ascending: true, nullsFirst: false });
 
   if (error) {
-    console.error("Error fetching documents:", error);
+    console.error("Error fetching documents:", error.message || error);
     return [];
   }
   return (data || []) as DocumentRecord[];
@@ -380,7 +381,7 @@ export function calculateAttentionItems(
         id: `warranty-${w.id}`,
         type: "warranty_expiring",
         title: `ضمان «${w.product_name}» ينتهي قريباً`,
-        subtitle: diffDays === 0 ? "ينتهي اليوم!" : `متبقي ${diffDays} يوم على انتهاء الضمان`,
+        subtitle: diffDays === 0 ? "ينتهي اليوم!" : `متبقي ${toArabicDigits(diffDays)} يوم على انتهاء الضمان`,
         daysRemaining: diffDays,
         date: w.warranty_end_date,
         severity: "soon",
@@ -391,7 +392,7 @@ export function calculateAttentionItems(
         id: `warranty-${w.id}`,
         type: "warranty_expiring",
         title: `ضمان «${w.product_name}» منتهي`,
-        subtitle: `انتهت صلاحية الضمان منذ ${Math.abs(diffDays)} يوم`,
+        subtitle: `انتهت صلاحية الضمان منذ ${toArabicDigits(Math.abs(diffDays))} يوم`,
         daysRemaining: diffDays,
         date: w.warranty_end_date,
         severity: "expired",
@@ -413,7 +414,7 @@ export function calculateAttentionItems(
         id: `doc-${d.id}`,
         type: "document_expiring",
         title: `وثيقة «${d.title}» قاربت على الانتهاء`,
-        subtitle: diffDays === 0 ? "تنتهي اليوم!" : `متبقي ${diffDays} يوم على تاريخ الانتهاء`,
+        subtitle: diffDays === 0 ? "تنتهي اليوم!" : `متبقي ${toArabicDigits(diffDays)} يوم على تاريخ الانتهاء`,
         daysRemaining: diffDays,
         date: d.expiry_date,
         severity: "soon",
@@ -424,7 +425,7 @@ export function calculateAttentionItems(
         id: `doc-${d.id}`,
         type: "document_expiring",
         title: `وثيقة «${d.title}» منتهية الصلاحية`,
-        subtitle: `انتهت بتاريخ ${d.expiry_date}`,
+        subtitle: `انتهت بتاريخ ${formatArabicDate(d.expiry_date)}`,
         daysRemaining: diffDays,
         date: d.expiry_date,
         severity: "expired",

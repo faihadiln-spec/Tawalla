@@ -113,7 +113,7 @@ export const WarrantyFormModal: React.FC<WarrantyFormModalProps> = ({
         {/* Product Name */}
         <Input
           label="اسم الجهاز / المنتج"
-          placeholder="مثال: هاتف آيفون 16، شاشة سامسونج OLED، ثلاجة إل جي..."
+          placeholder="مثال: هاتف آيفون ١٦، شاشة سامسونج OLED، ثلاجة إل جي..."
           value={productName}
           onChange={(e) => setProductName(e.target.value)}
           required
@@ -131,7 +131,7 @@ export const WarrantyFormModal: React.FC<WarrantyFormModalProps> = ({
           <Input
             label="مدة الضمان بالأشهر (اختياري)"
             type="number"
-            placeholder="مثال: 24"
+            placeholder="مثال: ٢٤"
             value={durationMonths}
             onChange={(e) => setDurationMonths(e.target.value)}
           />

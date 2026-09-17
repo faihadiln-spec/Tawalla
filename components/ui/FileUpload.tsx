@@ -26,7 +26,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   onFileUploaded,
   onFileRemoved,
   label = "المرفق أو المستند",
-  helperText = "يدعم PDF, JPG, PNG بحجم أقصى 10 ميجابايت",
+  helperText = "يدعم PDF, JPG, PNG بحجم أقصى ١٠ ميجابايت",
   accept = "image/jpeg,image/png,image/webp,application/pdf",
   maxSizeBytes = 10 * 1024 * 1024,
 }) => {
@@ -43,7 +43,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     if (!file) return;
 
     if (file.size > maxSizeBytes) {
-      setUploadError("حجم الملف يتجاوز الحد الأقصى المسموح (10 ميجابايت).");
+      setUploadError("حجم الملف يتجاوز الحد الأقصى المسموح (١٠ ميجابايت).");
       return;
     }
 

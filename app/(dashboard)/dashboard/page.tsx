@@ -15,6 +15,8 @@ import { PortalCards } from "@/components/dashboard/PortalCards";
 import { CalmSpinner } from "@/components/ui/LoadingState";
 import { Sparkles, Calendar, ShieldCheck, CheckCircle2 } from "lucide-react";
 
+import { toArabicDigits } from "@/lib/utils/formatters";
+
 export default function DashboardHomePage() {
   const { user } = useAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -87,16 +89,11 @@ export default function DashboardHomePage() {
 
   return (
     <div className="space-y-10 text-right">
-      {/* 1. Personalized Greeting & Command Center Banner */}
+      {/* 1. Personalized Greeting Banner */}
       <div className="p-7 sm:p-9 rounded-3xl bg-surface border border-tint-brown/30 shadow-soft space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-tint-blue text-primary-blue border border-primary-blue/20">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>مركز القيادة الشخصي</span>
-        </div>
-
         <div className="space-y-2">
           <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-text-main">
-            أهلاً بك، {displayName} ✨
+            أهلاً بك، {displayName}
           </h1>
           <p className="text-xs sm:text-sm text-text-muted leading-relaxed max-w-2xl font-normal">
             مساحتك الخاصة لمتابعة ما يهمك من مصاريف وضمانات ووثائق في مكان واحد هادئ ومنظم.
@@ -104,17 +101,16 @@ export default function DashboardHomePage() {
         </div>
 
         <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-text-muted border-t border-tint-brown/20">
-          <span className="flex items-center gap-1.5 font-medium text-text-main">
-            <CheckCircle2 className="w-4 h-4 text-accent-green" /> مساحة مشفرة وخاصة
-          </span>
           <span className="flex items-center gap-1.5 font-medium text-text-muted">
             <Calendar className="w-4 h-4 text-warm-brown" /> اليوم:{" "}
-            {new Date().toLocaleDateString("ar-SA", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+            {toArabicDigits(
+              new Date().toLocaleDateString("ar-SA-u-nu-arab", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            )}
           </span>
         </div>
       </div>
@@ -124,9 +120,8 @@ export default function DashboardHomePage() {
 
       {/* 3. The Three Portals */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between text-xs font-semibold text-text-muted">
+        <div className="text-xs font-semibold text-text-muted">
           <span>المسارات الأساسية الثلاثة</span>
-          <span>اختر مساراً للمعاينة والتعديل</span>
         </div>
 
         <PortalCards

@@ -16,6 +16,7 @@ import {
   Clock,
   CheckCircle,
 } from "lucide-react";
+import { toArabicDigits, formatArabicDate } from "@/lib/utils/formatters";
 
 interface WarrantyCardProps {
   warranty: Warranty;
@@ -96,7 +97,7 @@ export const WarrantyCard: React.FC<WarrantyCardProps> = ({
             <Calendar className="w-3.5 h-3.5" /> نهاية الضمان
           </span>
           <span className="font-semibold text-text-main font-mono">
-            {warranty.warranty_end_date}
+            {formatArabicDate(warranty.warranty_end_date)}
           </span>
         </div>
 
@@ -114,10 +115,10 @@ export const WarrantyCard: React.FC<WarrantyCardProps> = ({
             }`}
           >
             {diffDays < 0
-              ? `منتهي منذ ${Math.abs(diffDays)} يوم`
+              ? `منتهي منذ ${toArabicDigits(Math.abs(diffDays))} يوم`
               : diffDays === 0
               ? "ينتهي اليوم!"
-              : `متبقي ${diffDays} يوم`}
+              : `متبقي ${toArabicDigits(diffDays)} يوم`}
           </span>
         </div>
 
@@ -125,7 +126,7 @@ export const WarrantyCard: React.FC<WarrantyCardProps> = ({
           <div className="flex items-center justify-between text-text-muted">
             <span>مدة الضمان الأصلية</span>
             <span className="font-medium text-text-main">
-              {warranty.duration_months} شهر
+              {toArabicDigits(warranty.duration_months)} شهر
             </span>
           </div>
         )}

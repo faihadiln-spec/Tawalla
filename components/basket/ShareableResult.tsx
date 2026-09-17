@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { TawallaLogo } from "@/components/brand/TawallaLogo";
 import { Expense, EXPENSE_CATEGORY_LABELS } from "@/types";
 import { Sparkles, Copy, Check, TrendingDown, Share2 } from "lucide-react";
+import { formatArabicNumber } from "@/lib/utils/formatters";
 
 interface ShareableResultProps {
   isOpen: boolean;
@@ -36,8 +37,8 @@ export const ShareableResult: React.FC<ShareableResultProps> = ({
 
   const handleCopyText = async () => {
     const shareText = `🎯 تجربتي مع سلة «تولّى»:
-💰 تكلفة الاشتراكات الشهرية الحالية: ${currentTotal.toLocaleString()} ر.س
-✨ الوفر المحقق بعد استبعاد ما لا أحتاجه: ${monthlySavings.toLocaleString()} ر.س شهرياً (${annualSavings.toLocaleString()} ر.س سنوياً)!
+💰 تكلفة الاشتراكات الشهرية الحالية: ${formatArabicNumber(currentTotal)} ر.س
+✨ الوفر المحقق بعد استبعاد ما لا أحتاجه: ${formatArabicNumber(monthlySavings)} ر.س شهرياً (${formatArabicNumber(annualSavings)} ر.س سنوياً)!
 جرّب سلتك وتحكّم في مصروفاتك: ${typeof window !== "undefined" ? window.location.origin : "tawalla.app"}`;
 
     try {
@@ -76,7 +77,7 @@ export const ShareableResult: React.FC<ShareableResultProps> = ({
           <div className="space-y-1">
             <p className="text-xs text-text-muted font-medium">تكلفة نمط حياتي الشهرية</p>
             <p className="text-3xl sm:text-4xl font-extrabold text-primary-blue">
-              {currentTotal.toLocaleString()}{" "}
+              {formatArabicNumber(currentTotal)}{" "}
               <span className="text-sm font-normal text-text-muted">ر.س / شهر</span>
             </p>
           </div>
@@ -90,10 +91,10 @@ export const ShareableResult: React.FC<ShareableResultProps> = ({
               </div>
               <div className="flex items-baseline justify-between text-text-main">
                 <span className="text-sm font-bold text-accent-green">
-                  +{monthlySavings.toLocaleString()} ر.س شهرياً
+                  +{formatArabicNumber(monthlySavings)} ر.س شهرياً
                 </span>
                 <span className="text-xs text-text-muted">
-                  يعادل <strong className="text-text-main">+{annualSavings.toLocaleString()} ر.س</strong> سنوياً
+                  يعادل <strong className="text-text-main">+{formatArabicNumber(annualSavings)} ر.س</strong> سنوياً
                 </span>
               </div>
             </div>
@@ -109,7 +110,7 @@ export const ShareableResult: React.FC<ShareableResultProps> = ({
                   className="flex items-center justify-between p-2.5 rounded-xl bg-surface/80 border border-tint-brown/30 text-xs"
                 >
                   <span className="text-text-muted font-medium">{catName}</span>
-                  <span className="font-bold text-text-main">{sum} ر.س</span>
+                  <span className="font-bold text-text-main">{formatArabicNumber(sum)} ر.س</span>
                 </div>
               ))}
             </div>

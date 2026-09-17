@@ -19,6 +19,7 @@ import {
   FileSignature,
   User,
 } from "lucide-react";
+import { toArabicDigits, formatArabicDate } from "@/lib/utils/formatters";
 
 interface DocumentCardProps {
   document: DocumentRecord;
@@ -107,7 +108,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
           </h3>
           {document.document_number && (
             <p className="text-xs text-text-muted font-mono mt-0.5">
-              رقم الوثيقة: {document.document_number}
+              رقم الوثيقة: {toArabicDigits(document.document_number)}
             </p>
           )}
         </div>
@@ -122,7 +123,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                 <Calendar className="w-3.5 h-3.5" /> تاريخ الانتهاء
               </span>
               <span className="font-semibold text-text-main font-mono">
-                {document.expiry_date}
+                {formatArabicDate(document.expiry_date)}
               </span>
             </div>
 
@@ -141,10 +142,10 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                   }`}
                 >
                   {diffDays < 0
-                    ? `منتهية منذ ${Math.abs(diffDays)} يوم`
+                    ? `منتهية منذ ${toArabicDigits(Math.abs(diffDays))} يوم`
                     : diffDays === 0
                     ? "تنتهي اليوم!"
-                    : `متبقي ${diffDays} يوم`}
+                    : `متبقي ${toArabicDigits(diffDays)} يوم`}
                 </span>
               </div>
             )}
