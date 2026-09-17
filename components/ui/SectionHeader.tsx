@@ -9,6 +9,7 @@ export interface SectionHeaderProps {
   action?: React.ReactNode;
   align?: "right" | "center";
   className?: string;
+  titleClassName?: string;
 }
 
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
@@ -19,6 +20,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   action,
   align = "right",
   className = "",
+  titleClassName = "",
 }) => {
   const isCenter = align === "center";
 
@@ -28,7 +30,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         isCenter ? "text-center items-center" : "text-right"
       } ${className}`}
     >
-      <div className={`space-y-3 max-w-3xl ${isCenter ? "mx-auto" : ""}`}>
+      <div className={`space-y-3 max-w-5xl lg:max-w-none ${isCenter ? "mx-auto" : ""}`}>
         {badgeText && (
           <div>
             <Badge variant={badgeVariant} size="md">
@@ -36,7 +38,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
             </Badge>
           </div>
         )}
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text-main leading-snug">
+        <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-text-main leading-snug ${titleClassName}`}>
           {title}
         </h2>
         {subtitle && (

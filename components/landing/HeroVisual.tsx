@@ -13,8 +13,8 @@ export const HeroVisual: React.FC = () => {
       {/* Decorative orbital halo */}
       <div className="absolute w-[82%] h-[82%] rounded-full border border-tint-brown/30 pointer-events-none" />
 
-      {/* Central Tawalla Organic Brand Pouch (مزاح إلى اليمين قليلاً مع الحفاظ على الحركة) */}
-      <div className="relative z-10 translate-x-6 sm:translate-x-8">
+      {/* Central Tawalla Organic Brand Pouch (مزاح إلى اليمين بوضوح حسب التوجيه) */}
+      <div className="relative z-10 translate-x-12 sm:translate-x-16">
         <div className="p-6 rounded-full bg-surface/85 backdrop-blur-md border border-tint-brown/40 shadow-soft flex items-center justify-center transition-transform duration-500 hover:scale-105">
           <TawallaIcon size={95} />
         </div>
@@ -40,8 +40,8 @@ export const HeroVisual: React.FC = () => {
         </div>
       </div>
 
-      {/* Card 2: وثائقي (Middle Left - مبعدة لليسار قليلاً مع بقاء الحركة الديناميكية) */}
-      <div className="absolute top-1/2 -translate-y-1/2 -left-2 sm:left-0 z-20 w-56 sm:w-60 p-3.5 sm:p-4 rounded-3xl bg-surface/95 backdrop-blur-sm shadow-soft border border-warm-brown/25 rotate-[-3deg] hover:rotate-0 hover:scale-105 hover:-translate-y-1.5 hover:z-30 hover:shadow-float transition-all duration-300 ease-out cursor-pointer">
+      {/* Card 2: وثائقي (Middle Left - متناسقة مع إزاحة الشعار دون تداخل) */}
+      <div className="absolute top-1/2 -translate-y-1/2 -left-4 sm:-left-2 z-20 w-56 sm:w-60 p-3.5 sm:p-4 rounded-3xl bg-surface/95 backdrop-blur-sm shadow-soft border border-warm-brown/25 rotate-[-3deg] hover:rotate-0 hover:scale-105 hover:-translate-y-1.5 hover:z-30 hover:shadow-float transition-all duration-300 ease-out cursor-pointer">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-xl bg-tint-brown text-warm-brown flex items-center justify-center shadow-xs">

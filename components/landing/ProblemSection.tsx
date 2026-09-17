@@ -31,6 +31,7 @@ export const ProblemSection: React.FC = () => {
     <section id="problem" className="py-12 sm:py-16 space-y-12">
       <SectionHeader
         title="نظم اشتراكاتك وضماناتك ووثائقك في مكان واحد، وعش ببال مرتاح"
+        titleClassName="md:whitespace-nowrap"
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
