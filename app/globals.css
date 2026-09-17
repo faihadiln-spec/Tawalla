@@ -7,7 +7,7 @@
        local('29LT Riwaya Regular'),
        url('/fonts/29LT-Riwaya.woff2') format('woff2'),
        url('/fonts/29LT-Riwaya.ttf') format('truetype');
-  font-weight: 100 900;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -16,6 +16,7 @@
   font-family: '29LT Riwaya';
   src: local('29LT Riwaya Bold'),
        local('29LTRiwaya-Bold'),
+       local('29LT Riwaya Black'),
        url('/fonts/29LT-Riwaya.woff2') format('woff2'),
        url('/fonts/29LT-Riwaya.ttf') format('truetype');
   font-weight: 700;
@@ -77,6 +78,8 @@ html {
   background-color: var(--color-bg-main);
   color: var(--color-text-main);
   font-family: '29LT Riwaya', '29LTRiwaya', var(--font-arabic);
+  font-size: 16.5px;
+  font-synthesis: weight style;
   scroll-behavior: smooth;
 }
 
@@ -84,9 +87,35 @@ body {
   background-color: var(--color-bg-main);
   color: var(--color-text-main);
   font-family: '29LT Riwaya', '29LTRiwaya', var(--font-arabic);
+  font-synthesis: weight style;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Distinct Bold Styling for 29LT Riwaya */
+h1, h2, h3, h4, h5, h6,
+.font-bold,
+strong,
+b,
+[class*="font-bold"] {
+  font-weight: 700;
+  -webkit-text-stroke: 0.32px currentColor;
+  text-rendering: optimizeLegibility;
+}
+
+.font-semibold,
+[class*="font-semibold"] {
+  font-weight: 600;
+  -webkit-text-stroke: 0.16px currentColor;
+}
+
+h1,
+.text-3xl,
+.text-4xl,
+.text-5xl,
+.text-6xl {
+  -webkit-text-stroke: 0.45px currentColor;
 }
 
 /* Shimmer animation for skeleton loaders */
