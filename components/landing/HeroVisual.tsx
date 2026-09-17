@@ -13,9 +13,11 @@ export const HeroVisual: React.FC = () => {
       {/* Decorative orbital halo */}
       <div className="absolute w-[82%] h-[82%] rounded-full border border-tint-brown/30 pointer-events-none" />
 
-      {/* Central Tawalla Organic Brand Pouch */}
-      <div className="relative z-10 p-6 rounded-full bg-surface/85 backdrop-blur-md border border-tint-brown/40 shadow-soft flex items-center justify-center transition-transform duration-500 hover:scale-105">
-        <TawallaIcon size={95} />
+      {/* Central Tawalla Organic Brand Pouch (مزاح إلى اليمين قليلاً مع الحفاظ على الحركة) */}
+      <div className="relative z-10 translate-x-6 sm:translate-x-8">
+        <div className="p-6 rounded-full bg-surface/85 backdrop-blur-md border border-tint-brown/40 shadow-soft flex items-center justify-center transition-transform duration-500 hover:scale-105">
+          <TawallaIcon size={95} />
+        </div>
       </div>
 
       {/* Card 1: مصروفاتي (Top Right - مقربة للمركز بحركة ديناميكية) */}
