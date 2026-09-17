@@ -16,11 +16,11 @@ interface NotificationSettingsCardProps {
 }
 
 const PRESET_DAYS = [
-  { value: 0, label: "بدون تنبيه", description: "إيقاف التنبيه المسبق" },
-  { value: 3, label: "قبل ٣ أيام", description: "تنبيه سريع" },
-  { value: 7, label: "قبل ٧ أيام", description: "الخيار الموصى به" },
-  { value: 14, label: "قبل ١٤ يوماً", description: "مهلة كافية للتجديد" },
-  { value: 30, label: "قبل ٣٠ يوماً", description: "تنبيه مبكر جداً" },
+  { value: 0, label: "بدون تنبيه" },
+  { value: 3, label: "قبل ٣ أيام" },
+  { value: 7, label: "قبل ٧ أيام" },
+  { value: 14, label: "قبل ١٤ يوماً" },
+  { value: 30, label: "قبل ٣٠ يوماً" },
 ];
 
 export const NotificationSettingsCard: React.FC<NotificationSettingsCardProps> = ({
@@ -90,6 +90,18 @@ export const NotificationSettingsCard: React.FC<NotificationSettingsCardProps> =
       finalDays = parsed;
     }
 
+    if (notificationEmail.trim()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(notificationEmail.trim())) {
+        showToast({
+          type: "error",
+          title: "بريد غير صالح",
+          message: "يرجى إدخال عنوان بريد إلكتروني صحيح أو ترك الحقل فارغاً لاستخدام بريدك الأساسي.",
+        });
+        return;
+      }
+    }
+
     setIsSaving(true);
     try {
       const updates = {
@@ -103,20 +115,15 @@ export const NotificationSettingsCard: React.FC<NotificationSettingsCardProps> =
       const { data, error } = await updateProfile(profile.id, updates);
 
       if (error) {
-        // Fallback in case columns aren't added to DB yet
-        localStorage.setItem(`tawalla_notif_${profile.id}`, JSON.stringify(updates));
         showToast({
-          type: "success",
-          title: "تم الحفظ بنجاح",
-          message: "تم حفظ تفضيلات الإشعارات بنجاح.",
+          type: "error",
+          title: "تعذر الحفظ",
+          message: error || "حدث خطأ أثناء حفظ الإعدادات.",
         });
-        if (onProfileUpdated) {
-          onProfileUpdated({ ...profile, ...updates });
-        }
       } else if (data) {
         showToast({
           type: "success",
-          title: "تم حفظ التفضيلات",
+          title: "تم حفظ الإعدادات",
           message: "تم تحديث إعدادات الإشعارات والتنبيهات المسبقة بنجاح.",
         });
         if (onProfileUpdated) {
@@ -129,8 +136,20 @@ export const NotificationSettingsCard: React.FC<NotificationSettingsCardProps> =
   };
 
   const handleSendTestEmail = async () => {
-    setIsSendingTest(true);
     const targetEmail = notificationEmail.trim() || userEmail;
+    if (targetEmail) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(targetEmail)) {
+        showToast({
+          type: "error",
+          title: "بريد غير صالح",
+          message: "يرجى التأكد من كتابة البريد الإلكتروني بشكل صحيح.",
+        });
+        return;
+      }
+    }
+
+    setIsSendingTest(true);
 
     try {
       const res = await fetch("/api/notifications/test", {
@@ -142,25 +161,40 @@ export const NotificationSettingsCard: React.FC<NotificationSettingsCardProps> =
         }),
       });
 
+      const data = await res.json();
+
       if (res.ok) {
-        showToast({
-          type: "success",
-          title: "تم إرسال التنبيه التجريبي",
-          message: `أرسلنا إشعاراً نموذجياً إلى (${targetEmail}). يرجى التحقق من صندوق الوارد.`,
-        });
+        if (data.isLiveDelivered) {
+          showToast({
+            type: "success",
+            title: "تم إرسال التنبيه الفعلي",
+            message: `أرسلنا رسالة التنبيه إلى صندوق الوارد (${targetEmail}). يرجى فحص البريد.`,
+          });
+        } else if (data.needsMailProvider) {
+          showToast({
+            type: "info",
+            title: "التنبيهات مفعّلة في النظام",
+            message: data.message,
+          });
+        } else {
+          showToast({
+            type: "success",
+            title: "تم التحقق",
+            message: data.message || `تم تجهيز التنبيه للبريد (${targetEmail}).`,
+          });
+        }
       } else {
-        // Friendly simulated test mode
         showToast({
-          type: "info",
-          title: "تنبيه تجريبي جاهز",
-          message: `تم تجهيز نموذج الإشعار وإعداده للوصول إلى (${targetEmail}) قبل موعد الانتهاء.`,
+          type: "error",
+          title: "تعذر الإرسال",
+          message: data.error || "حدث خطأ أثناء معالجة التنبيه التجريبي.",
         });
       }
     } catch {
       showToast({
-        type: "info",
-        title: "نموذج الإشعار جاهز",
-        message: `تمت معاينة التنبيه المسبق بنجاح للبريد (${targetEmail}).`,
+        type: "error",
+        title: "خطأ اتصال",
+        message: "تعذر الاتصال بخادم التنبيهات. يرجى المحاولة لاحقاً.",
       });
     } finally {
       setIsSendingTest(false);
@@ -182,45 +216,39 @@ export const NotificationSettingsCard: React.FC<NotificationSettingsCardProps> =
             </CardDescription>
           </div>
         </div>
-
-        {/* Status Indicator */}
-        <span
-          className={`text-xs px-2.5 py-1 rounded-full font-semibold border ${
-            enabled
-              ? "bg-tint-green text-accent-green border-accent-green/30"
-              : "bg-bg-main text-text-muted border-tint-brown/40"
-          }`}
-        >
-          {enabled ? "الإشعارات مفعّلة" : "الإشعارات معطّلة"}
-        </span>
       </div>
 
       <form onSubmit={handleSaveSettings} className="space-y-6">
         {/* 1. Main Toggle: Enable Email Notifications */}
         <div className="p-4 rounded-2xl bg-bg-main border border-tint-brown/30 flex items-center justify-between gap-4">
           <div className="space-y-0.5">
-            <label
-              htmlFor="email-notif-toggle"
+            <div
+              onClick={() => setEnabled(!enabled)}
               className="text-sm font-bold text-text-main cursor-pointer flex items-center gap-2"
             >
               <Mail className="w-4 h-4 text-warm-brown" />
               <span>تفعيل التنبيهات عبر البريد الإلكتروني</span>
-            </label>
+            </div>
             <p className="text-xs text-text-muted">
               إرسال رسائل تذكير تلقائية إلى بريدك الإلكتروني قبل انتهاء صلاحية العناصر المسجلة.
             </p>
           </div>
 
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              id="email-notif-toggle"
-              type="checkbox"
-              checked={enabled}
-              onChange={(e) => setEnabled(e.target.checked)}
-              className="sr-only peer"
+          <button
+            type="button"
+            role="switch"
+            aria-checked={enabled}
+            onClick={() => setEnabled(!enabled)}
+            className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full p-1 transition-colors duration-200 ease-in-out focus:outline-none ${
+              enabled ? "bg-accent-green" : "bg-tint-brown/80"
+            }`}
+          >
+            <span
+              className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-transform duration-200 ease-in-out ${
+                enabled ? "-translate-x-5" : "translate-x-0"
+              }`}
             />
-            <div className="w-11 h-6 bg-tint-brown peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-tint-brown after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent-green"></div>
-          </label>
+          </button>
         </div>
 
         {/* Settings body visible when enabled */}
@@ -257,14 +285,13 @@ export const NotificationSettingsCard: React.FC<NotificationSettingsCardProps> =
                       key={preset.value}
                       type="button"
                       onClick={() => handleSelectDays(preset.value)}
-                      className={`p-3 rounded-2xl border text-center transition-all cursor-pointer ${
+                      className={`py-3.5 px-2 rounded-2xl border text-center transition-all cursor-pointer flex items-center justify-center ${
                         isSelected
                           ? "bg-tint-brown border-warm-brown text-warm-brown shadow-soft ring-1 ring-warm-brown font-bold"
-                          : "bg-surface border-tint-brown/30 hover:border-tint-brown text-text-main"
+                          : "bg-surface border-tint-brown/30 hover:border-tint-brown text-text-main font-semibold"
                       }`}
                     >
-                      <p className="text-xs font-bold">{preset.label}</p>
-                      <p className="text-[10px] text-text-muted mt-0.5">{preset.description}</p>
+                      <span className="text-xs font-bold">{preset.label}</span>
                     </button>
                   );
                 })}
@@ -397,6 +424,7 @@ export const NotificationSettingsCard: React.FC<NotificationSettingsCardProps> =
             </div>
           </div>
         )}
+
 
         {/* Footer Actions */}
         <div className="flex items-center justify-end gap-3 pt-3 border-t border-tint-brown/20">

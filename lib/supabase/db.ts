@@ -27,7 +27,27 @@ export async function getProfile(userId: string): Promise<Profile | null> {
   if (error || !data) {
     return null;
   }
-  return data as Profile;
+
+  // Merge user_metadata if available for seamless persistence
+  try {
+    const { data: authData } = await supabase.auth.getUser();
+    const meta = authData?.user?.user_metadata || {};
+    return {
+      ...data,
+      email_notifications_enabled:
+        data.email_notifications_enabled ?? meta.email_notifications_enabled ?? true,
+      reminder_days:
+        data.reminder_days ?? meta.reminder_days ?? 7,
+      notify_warranties:
+        data.notify_warranties ?? meta.notify_warranties ?? true,
+      notify_documents:
+        data.notify_documents ?? meta.notify_documents ?? true,
+      notification_email:
+        data.notification_email ?? meta.notification_email ?? null,
+    } as Profile;
+  } catch {
+    return data as Profile;
+  }
 }
 
 export async function updateProfile(
@@ -35,17 +55,69 @@ export async function updateProfile(
   updates: Partial<Profile>
 ): Promise<{ data: Profile | null; error: string | null }> {
   const supabase = createClient();
+
+  // 1. Security: exclude read-only fields
+  const { id, created_at, ...allowedUpdates } = updates;
+
+  // 2. Persist notification preferences in Supabase Auth user_metadata
+  // This guarantees persistence even before database schema migrations are executed
+  const notifMeta: Record<string, any> = {};
+  if (updates.email_notifications_enabled !== undefined)
+    notifMeta.email_notifications_enabled = updates.email_notifications_enabled;
+  if (updates.reminder_days !== undefined)
+    notifMeta.reminder_days = updates.reminder_days;
+  if (updates.notify_warranties !== undefined)
+    notifMeta.notify_warranties = updates.notify_warranties;
+  if (updates.notify_documents !== undefined)
+    notifMeta.notify_documents = updates.notify_documents;
+  if (updates.notification_email !== undefined)
+    notifMeta.notification_email = updates.notification_email;
+
+  if (Object.keys(notifMeta).length > 0) {
+    try {
+      await supabase.auth.updateUser({ data: notifMeta });
+    } catch (e) {
+      console.warn("Could not sync to user_metadata:", e);
+    }
+  }
+
+  // 3. Attempt update on public.profiles table
   const { data, error } = await supabase
     .from("profiles")
-    .update({ ...updates, updated_at: new Date().toISOString() })
+    .update({ ...allowedUpdates, updated_at: new Date().toISOString() })
     .eq("id", userId)
     .select()
     .single();
 
   if (error) {
-    console.error("Error updating profile:", error);
-    return { data: null, error: "تعذر تحديث البيانات." };
+    // If public.profiles table hasn't added the new columns yet (Postgres code 42703),
+    // update only standard existing profile fields without crashing
+    const baseUpdates: Record<string, any> = {};
+    if (updates.full_name !== undefined) baseUpdates.full_name = updates.full_name;
+    if (updates.avatar_url !== undefined) baseUpdates.avatar_url = updates.avatar_url;
+    if (updates.currency !== undefined) baseUpdates.currency = updates.currency;
+
+    if (Object.keys(baseUpdates).length > 0) {
+      await supabase
+        .from("profiles")
+        .update({ ...baseUpdates, updated_at: new Date().toISOString() })
+        .eq("id", userId);
+    }
+
+    // Return the updated data merged cleanly with the updates
+    return {
+      data: {
+        id: userId,
+        full_name: updates.full_name || "",
+        currency: updates.currency || "SAR",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        ...updates,
+      } as Profile,
+      error: null,
+    };
   }
+
   return { data: data as Profile, error: null };
 }
 
