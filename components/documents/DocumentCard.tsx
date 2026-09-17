@@ -19,7 +19,11 @@ import {
   FileSignature,
   User,
 } from "lucide-react";
-import { toArabicDigits, formatArabicDate } from "@/lib/utils/formatters";
+import {
+  toArabicDigits,
+  formatArabicDate,
+  formatDaysRemaining,
+} from "@/lib/utils/formatters";
 
 interface DocumentCardProps {
   document: DocumentRecord;
@@ -141,11 +145,7 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({
                       : "text-accent-green"
                   }`}
                 >
-                  {diffDays < 0
-                    ? `منتهية منذ ${toArabicDigits(Math.abs(diffDays))} يوم`
-                    : diffDays === 0
-                    ? "تنتهي اليوم!"
-                    : `متبقي ${toArabicDigits(diffDays)} يوم`}
+                  {formatDaysRemaining(diffDays, true)}
                 </span>
               </div>
             )}

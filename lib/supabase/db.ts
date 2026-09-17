@@ -377,22 +377,44 @@ export function calculateAttentionItems(
     const diffDays = Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 
     if (diffDays <= 30 && diffDays >= 0) {
+      const daysText =
+        diffDays === 1
+          ? "يوم واحد"
+          : diffDays === 2
+          ? "يومان"
+          : diffDays <= 10
+          ? `${toArabicDigits(diffDays)} أيام`
+          : `${toArabicDigits(diffDays)} يوماً`;
+
       items.push({
         id: `warranty-${w.id}`,
         type: "warranty_expiring",
         title: `ضمان «${w.product_name}» ينتهي قريباً`,
-        subtitle: diffDays === 0 ? "ينتهي اليوم!" : `متبقي ${toArabicDigits(diffDays)} يوم على انتهاء الضمان`,
+        subtitle:
+          diffDays === 0
+            ? "ينتهي اليوم!"
+            : `متبقي ${daysText} على انتهاء الضمان`,
         daysRemaining: diffDays,
         date: w.warranty_end_date,
         severity: "soon",
         href: "/warranties",
       });
     } else if (diffDays < 0 && diffDays >= -30) {
+      const absDays = Math.abs(diffDays);
+      const daysText =
+        absDays === 1
+          ? "يوم واحد"
+          : absDays === 2
+          ? "يومين"
+          : absDays <= 10
+          ? `${toArabicDigits(absDays)} أيام`
+          : `${toArabicDigits(absDays)} يوماً`;
+
       items.push({
         id: `warranty-${w.id}`,
         type: "warranty_expiring",
         title: `ضمان «${w.product_name}» منتهي`,
-        subtitle: `انتهت صلاحية الضمان منذ ${toArabicDigits(Math.abs(diffDays))} يوم`,
+        subtitle: `انتهت صلاحية الضمان منذ ${daysText}`,
         daysRemaining: diffDays,
         date: w.warranty_end_date,
         severity: "expired",
@@ -410,11 +432,23 @@ export function calculateAttentionItems(
     const reminderDays = d.reminder_days_before || 30;
 
     if (diffDays <= reminderDays && diffDays >= 0) {
+      const daysText =
+        diffDays === 1
+          ? "يوم واحد"
+          : diffDays === 2
+          ? "يومان"
+          : diffDays <= 10
+          ? `${toArabicDigits(diffDays)} أيام`
+          : `${toArabicDigits(diffDays)} يوماً`;
+
       items.push({
         id: `doc-${d.id}`,
         type: "document_expiring",
         title: `وثيقة «${d.title}» قاربت على الانتهاء`,
-        subtitle: diffDays === 0 ? "تنتهي اليوم!" : `متبقي ${toArabicDigits(diffDays)} يوم على تاريخ الانتهاء`,
+        subtitle:
+          diffDays === 0
+            ? "تنتهي اليوم!"
+            : `متبقي ${daysText} على تاريخ الانتهاء`,
         daysRemaining: diffDays,
         date: d.expiry_date,
         severity: "soon",

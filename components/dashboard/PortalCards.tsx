@@ -1,7 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import { TrendingDown, ShieldCheck, FileText } from "lucide-react";
-import { formatArabicNumber, toArabicDigits } from "@/lib/utils/formatters";
+import {
+  formatArabicNumber,
+  formatWarrantiesCount,
+  formatDocumentsCount,
+} from "@/lib/utils/formatters";
 
 interface PortalCardsProps {
   monthlyExpensesTotal: number;
@@ -17,6 +21,9 @@ export const PortalCards: React.FC<PortalCardsProps> = ({
   warrantiesCount,
   documentsCount,
 }) => {
+  const warInfo = formatWarrantiesCount(warrantiesCount);
+  const docInfo = formatDocumentsCount(documentsCount);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 text-right">
       {/* 1. Portal: مصروفاتي */}
@@ -70,8 +77,10 @@ export const PortalCards: React.FC<PortalCardsProps> = ({
           <div className="pt-1">
             <p className="text-[11px] text-text-muted font-medium">الضمانات المسجلة</p>
             <p className="text-2xl sm:text-3xl font-extrabold text-accent-green">
-              {toArabicDigits(warrantiesCount)}{" "}
-              <span className="text-xs font-normal text-text-muted">ضمان محفوظ</span>
+              {warInfo.main}{" "}
+              {warInfo.suffix && (
+                <span className="text-xs font-normal text-text-muted">{warInfo.suffix}</span>
+              )}
             </p>
           </div>
         </div>
@@ -99,8 +108,10 @@ export const PortalCards: React.FC<PortalCardsProps> = ({
           <div className="pt-1">
             <p className="text-[11px] text-text-muted font-medium">الوثائق المؤرشفة</p>
             <p className="text-2xl sm:text-3xl font-extrabold text-warm-brown">
-              {toArabicDigits(documentsCount)}{" "}
-              <span className="text-xs font-normal text-text-muted">وثيقة محفوظة</span>
+              {docInfo.main}{" "}
+              {docInfo.suffix && (
+                <span className="text-xs font-normal text-text-muted">{docInfo.suffix}</span>
+              )}
             </p>
           </div>
         </div>

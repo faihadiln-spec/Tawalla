@@ -3,7 +3,7 @@
 import React from "react";
 import { Sparkles, RotateCcw, Share2, TrendingDown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { formatArabicNumber, toArabicDigits } from "@/lib/utils/formatters";
+import { formatArabicNumber, formatExcludedSubscriptions } from "@/lib/utils/formatters";
 
 interface SavingsSummaryProps {
   initialTotal: number;
@@ -54,7 +54,7 @@ export const SavingsSummary: React.FC<SavingsSummaryProps> = ({
                   <Sparkles className="w-3 h-3" /> وفر محقق
                 </span>
                 <span className="text-xs text-text-muted font-medium">
-                  (تم استبعاد {toArabicDigits(excludedCount)} اشتراك)
+                  ({formatExcludedSubscriptions(excludedCount)})
                 </span>
               </div>
               <div className="flex items-baseline gap-4 pt-0.5">
