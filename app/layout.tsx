@@ -14,6 +14,13 @@ const ibmPlexArabic = IBM_Plex_Sans_Arabic({
 export const metadata: Metadata = {
   title: "تولّى | مساحتك الشخصية لما يهمك",
   description: "تولّى مصاريفك، ضماناتك ووثائقك. كل ما يخص حياتك المالية والشخصية، في مكان واحد.",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

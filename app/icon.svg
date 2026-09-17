@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <!-- Soft luxury background squircle for perfect visibility on dark and light browser tabs -->
+  <rect width="200" height="200" rx="48" fill="#FDFBF7"/>
+  <rect width="192" height="192" x="4" y="4" rx="44" stroke="#EFEAE3" stroke-width="4" fill="none"/>
+
+  <!-- Blue Document Card (وثائقي) -->
+  <g transform="translate(62, 44) rotate(-3)">
+    <!-- Main Card with Folded Top-Right Corner -->
+    <path
+      d="M 10 0 
+         L 42 0 
+         L 56 14 
+         L 56 70 
+         C 56 76, 51 80, 45 80 
+         L 11 80 
+         C 5 80, 0 76, 0 70 
+         L 0 10 
+         C 0 4, 5 0, 10 0 Z"
+      fill="#5C86C0"
+    />
+    <!-- Folded Corner Triangle -->
+    <path
+      d="M 42 0 L 42 14 L 56 14 Z"
+      fill="#E8EFF8"
+      opacity="0.9"
+    />
+    <!-- Document Profile / Avatar Mark -->
+    <circle cx="28" cy="28" r="8" fill="#FFFFFF" />
+    <path
+      d="M 16 52 C 16 43, 21 39, 28 39 C 35 39, 40 43, 40 52 Z"
+      fill="#FFFFFF"
+    />
+    <!-- Information Lines -->
+    <rect x="18" y="56" width="20" height="3.5" rx="1.75" fill="#FFFFFF" opacity="0.9" />
+    <rect x="18" y="63" width="14" height="3" rx="1.5" fill="#FFFFFF" opacity="0.8" />
+  </g>
+
+  <!-- Green Currency Card (مصروفاتي / ضماناتي) -->
+  <g transform="translate(108, 62) rotate(14)">
+    <!-- Card Body -->
+    <rect
+      x="0"
+      y="0"
+      width="48"
+      height="58"
+      rx="9"
+      fill="#7A9B7C"
+    />
+    <!-- White Inset Border/Frame -->
+    <rect
+      x="4"
+      y="4"
+      width="40"
+      height="50"
+      rx="6"
+      stroke="#EAF1EA"
+      stroke-width="1.8"
+      fill="none"
+      opacity="0.85"
+    />
+    <!-- Currency / Riyal Symbol Stamp -->
+    <circle cx="24" cy="29" r="11" fill="#EAF1EA" />
+    <!-- Stylized Emblem in center -->
+    <path
+      d="M 24 21 L 24 37 M 20 25 L 28 25 M 19 32 L 27 32"
+      stroke="#7A9B7C"
+      stroke-width="2.2"
+      stroke-linecap="round"
+    />
+  </g>
+
+  <!-- The Warm Brown Pouch (الحقيبة الحاضنة - #AA8573) -->
+  <!-- Left / Main Body of the Pouch -->
+  <path
+    d="M 46 80 
+       C 42 81, 39 85, 41 90 
+       L 47 122 
+       C 51 144, 70 152, 94 152 
+       L 124 152 
+       C 127 152, 129 150, 129 147 
+       L 115 106 
+       C 114 103, 112 101, 109 100 
+       L 54 81 
+       C 51 80, 48 80, 46 80 Z"
+    fill="#AA8573"
+  />
+
+  <!-- Right Flap of the Pouch -->
+  <path
+    d="M 120 106 
+       L 134 146 
+       C 135 148, 137 150, 140 148 
+       C 152 142, 160 126, 162 108 
+       C 163 103, 160 98, 155 99 
+       L 125 105 
+       C 123 105, 121 105, 120 106 Z"
+    fill="#9B7766"
+  />
+
+  <!-- Subtle bottom shadow line -->
+  <path
+    d="M 58 153 C 78 158, 122 158, 142 153"
+    stroke="#AA8573"
+    stroke-width="3"
+    stroke-linecap="round"
+    opacity="0.3"
+  />
+</svg>
