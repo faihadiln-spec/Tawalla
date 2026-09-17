@@ -27,6 +27,12 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const generatedId = React.useId();
     const inputId = id || generatedId;
 
+    const isLtrType =
+      props.type === "email" ||
+      props.type === "password" ||
+      props.type === "tel" ||
+      props.type === "url";
+
     return (
       <div className="w-full space-y-1.5 text-right">
         {label && (
@@ -49,7 +55,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             ref={ref}
             disabled={disabled}
+            dir={props.dir || (isLtrType ? "ltr" : undefined)}
             className={`w-full bg-surface text-text-main text-sm rounded-2xl border transition-all duration-200 placeholder:text-text-muted/60 focus:outline-none focus:ring-2 disabled:bg-bg-main disabled:opacity-60 ${
+              isLtrType ? "text-left" : ""
+            } ${
               rightIcon ? "pr-10" : "pr-4"
             } ${leftIcon ? "pl-10" : "pl-4"} py-3 ${
               error
