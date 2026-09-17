@@ -38,7 +38,9 @@ export default function LandingPage() {
     } else {
       const element = document.getElementById(id);
       if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+        const navOffset = 96; // Safe spacing below floating navbar
+        const targetTop = element.getBoundingClientRect().top + window.scrollY - navOffset;
+        window.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
       }
     }
   };
@@ -109,7 +111,7 @@ export default function LandingPage() {
         <ConceptSection />
 
         {/* 4. مصروفاتي: THE SIGNATURE BASKET PREVIEW */}
-        <section id="expenses" className="py-8 sm:py-12 space-y-8">
+        <section id="expenses" className="scroll-mt-28 py-8 sm:py-12 space-y-8">
           <SectionHeader
             badgeText="مسار مصروفاتي"
             badgeVariant="blue"

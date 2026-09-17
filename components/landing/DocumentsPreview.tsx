@@ -44,7 +44,7 @@ export const DocumentsPreview: React.FC = () => {
   ];
 
   return (
-    <section id="documents" className="py-12 sm:py-16 space-y-12">
+    <section id="documents" className="scroll-mt-28 py-12 sm:py-16 space-y-12">
       <SectionHeader
         badgeText="مسار وثائقي"
         badgeVariant="brown"
