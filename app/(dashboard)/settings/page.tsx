@@ -149,7 +149,7 @@ export default function SettingsPage() {
 
           <div className="space-y-1.5">
             <label className="block text-xs font-semibold text-text-main">
-              البريد الإلكتروني (المسجل في سوبابيز)
+              البريد الإلكتروني
             </label>
             <input
               type="email"
