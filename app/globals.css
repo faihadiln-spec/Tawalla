@@ -1,5 +1,28 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: '29LT Riwaya';
+  src: local('29LT Riwaya'),
+       local('29LTRiwaya'),
+       local('29LT Riwaya Regular'),
+       url('/fonts/29LT-Riwaya.woff2') format('woff2'),
+       url('/fonts/29LT-Riwaya.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: '29LT Riwaya';
+  src: local('29LT Riwaya Bold'),
+       local('29LTRiwaya-Bold'),
+       url('/fonts/29LT-Riwaya.woff2') format('woff2'),
+       url('/fonts/29LT-Riwaya.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Tawalla Exact Brand Color Tokens */
   --color-bg-main: #FBFBF3;
@@ -37,7 +60,7 @@
   --color-tint-green: var(--color-tint-green);
   --color-tint-brown: var(--color-tint-brown);
 
-  --font-arabic: var(--font-ibm-plex-arabic), 'IBM Plex Sans Arabic', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-arabic: '29LT Riwaya', '29LTRiwaya', var(--font-ibm-plex-arabic), 'IBM Plex Sans Arabic', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   --shadow-soft: var(--shadow-soft);
   --shadow-float: var(--shadow-float);
@@ -53,14 +76,14 @@ html {
   direction: rtl;
   background-color: var(--color-bg-main);
   color: var(--color-text-main);
-  font-family: var(--font-arabic);
+  font-family: '29LT Riwaya', '29LTRiwaya', var(--font-arabic);
   scroll-behavior: smooth;
 }
 
 body {
   background-color: var(--color-bg-main);
   color: var(--color-text-main);
-  font-family: var(--font-arabic);
+  font-family: '29LT Riwaya', '29LTRiwaya', var(--font-arabic);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
